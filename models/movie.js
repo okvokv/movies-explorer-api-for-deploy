@@ -53,7 +53,7 @@ const movieSchema = new mongoose.Schema(
         message: 'Ошибка валидации ссылки',
       },
     },
-    ownerId: {
+    ownerId: { // тот, кто сохранил фильм в свою базу из общей
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'user',

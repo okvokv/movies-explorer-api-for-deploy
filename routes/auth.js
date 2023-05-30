@@ -1,16 +1,16 @@
 const { celebrate, Joi } = require('celebrate');
-const adminsRouter = require('express').Router();
+const authRouter = require('express').Router();
 const { regexforpassword } = require('../utils/regex');
 const { login, createUser, logout } = require('../controllers/users');
 
-adminsRouter.post('/signin', celebrate({
+authRouter.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8).max(30),
   }),
 }), login);
 
-adminsRouter.post('/signup', celebrate({
+authRouter.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().regex(regexforpassword),
@@ -18,6 +18,6 @@ adminsRouter.post('/signup', celebrate({
   }),
 }), createUser);
 
-adminsRouter.delete('/signout', logout);
+authRouter.delete('/signout', logout);
 
-module.exports = adminsRouter;
+module.exports = authRouter;

@@ -3,10 +3,10 @@ const determineError = require('../middlewares/dterrors');
 const ForbiddenError = require('../middlewares/ForbiddenError');
 const NotFoundError = require('../middlewares/NotFoundError');
 
-// получить все карточки фильмов
+// получить все карточки фильмов, сохранённых текущим пользователем
 const getMovies = (req, res, next) => {
-  const ownerId = req.user._id;
-  movie.find(ownerId)
+  const userId = req.user._id;
+  movie.find(userId)
     .then((userMovies) => res.send(userMovies))
     .catch((err) => determineError(err, next));
 };
@@ -23,13 +23,13 @@ const postMovie = (req, res, next) => {
 // удалить карточку фильма
 const deleteMovie = (req, res, next) => {
   // проверка существования карточки  с данным _id в бд
-  movie.findById(req.params.movieId)
+  movie.findById(req.params.savedMovId)
     .then((movieData) => {
       if (movieData) {
         // карточку может удалить только владелец
         const ownerId = movieData.ownerId.toString();
         if (ownerId === req.user._id) {
-          movie.findByIdAndRemove(req.params.movieId, { ownerId: req.user._id })
+          movie.findByIdAndRemove(req.params.savedMovId, { ownerId: req.user._id })
             .then(() => {
               res.send({ message: 'Пост удален' });
             })

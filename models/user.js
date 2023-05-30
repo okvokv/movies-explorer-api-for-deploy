@@ -19,12 +19,9 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
+      required: true,
       minlength: 2,
       maxlength: 30,
-      validate: {
-        validator(name) { return name.length >= 2 && name.length <= 30; },
-      },
-      message: 'Ошибка валидации name',
     },
   },
 );
