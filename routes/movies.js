@@ -9,15 +9,24 @@ moviesRouter.get('', getMovies);
 // обработка запроса создания карточки фильма
 moviesRouter.post('', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().regex(regexforlink),
+    country: Joi.string().required().min(1).max(100),
+    director: Joi.string().required().min(1).max(100),
+    duration: Joi.number().required(),
+    year: Joi.string().required().min(2).max(4),
+    description: Joi.string().required().min(1).max(1000),
+    image: Joi.string().required().regex(regexforlink),
+    trailer: Joi.string().required().regex(regexforlink),
+    thumbnail: Joi.string().required().regex(regexforlink),
+    movieId: Joi.number().required().hex().length(24),
+    nameRU: Joi.string().required().min(1).max(80),
+    nameEN: Joi.string().required().min(1).max(80),
   }),
 }), postMovie);
 
 // обработка запроса удаления карточки фильма по id
 moviesRouter.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().hex().length(24),
+    movieId: Joi.string().required().hex().length(24),
   }),
 }), deleteMovie);
 

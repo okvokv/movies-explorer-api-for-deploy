@@ -1,11 +1,12 @@
-const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { JWT_DEVELOPMENT } = require('../config');
 const user = require('../models/user');
 const determineError = require('../middlewares/dterrors');
 const UnauthorizedError = require('../middlewares/UnauthorizedError');
 const NotFoundError = require('../middlewares/NotFoundError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 // -----------------------------------------------------------------------------
 // получить данные текущего пользователя
 const getUser = (req, res, next) => {
@@ -52,7 +53,7 @@ function createToken(userData) {
   return jwt.sign(
     { _id: userData._id },
     // проверка на отсутствие режима разработки
-    NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret',
+    NODE_ENV === 'production' ? JWT_SECRET : JWT_DEVELOPMENT,
     { expiresIn: '7d' }, // на 7 дней
   );
 }

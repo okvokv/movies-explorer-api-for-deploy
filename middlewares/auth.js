@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { JWT_DEVELOPMENT } = require('../config');
 const UnauthorizedError = require('./UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -10,7 +11,7 @@ function auth(req, res, next) {
   if (token) {
     try {
       // сверка жетона
-      const payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret'); // проверка на отсутствие режима разработки
+      const payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : JWT_DEVELOPMENT); // проверка на отсутствие режима разработки
       req.user = payload;
       next();
     } catch (err) { next(new UnauthorizedError('token')); }
