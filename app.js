@@ -13,7 +13,6 @@ const limiter = require('./middlewares/rateLimiter');
 
 // подключение серверного модуля для интерпретации файла
 const app = express();
-console.log(process.env);
 
 // подключение базы данных
 mongoose.connect(MONGODB_URL)
@@ -31,8 +30,8 @@ app.use(requestsLogger);
 const allowedUrls = [
   'http://localhost:3000',
   'http://localhost:3001',
-  'http://okvokv-front.students.nomoredomains.monster', // ---- //
-  'https://okvokv-front.students.nomoredomains.monster', // ---- //
+  'http://okvokv.nomoredomains.rocks',
+  'https://okvokv.nomoredomains.rocks',
 ];
 
 // обработчик cors
