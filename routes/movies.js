@@ -26,7 +26,7 @@ moviesRouter.post('', celebrate({
 // обработка запроса удаления карточки фильма по id
 moviesRouter.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().hex().length(24),
+    movieId: Joi.number().required().hex().length(24),
   }),
 }), deleteMovie);
 
