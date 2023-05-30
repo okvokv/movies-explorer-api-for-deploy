@@ -17,7 +17,7 @@ moviesRouter.post('', celebrate({
     image: Joi.string().required().regex(regexforlink),
     trailer: Joi.string().required().regex(regexforlink),
     thumbnail: Joi.string().required().regex(regexforlink),
-    movieId: Joi.number().required().hex().length(24),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required().min(1).max(80),
     nameEN: Joi.string().required().min(1).max(80),
   }),
@@ -26,7 +26,7 @@ moviesRouter.post('', celebrate({
 // обработка запроса удаления карточки фильма по id
 moviesRouter.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required().hex().length(24),
+    movieId: Joi.number().required(),
   }),
 }), deleteMovie);
 
