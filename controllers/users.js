@@ -78,12 +78,12 @@ const login = (req, res, next) => {
                 .send({ message: 'Авторизация успешна.' });
               return;
             }
-            next(new UnauthorizedError(''));
+            next(new UnauthorizedError());
           })
           .catch((err) => determineError(err, next));
         return;
       }
-      next(new UnauthorizedError(''));
+      next(new UnauthorizedError());
     })
     .catch((err) => determineError(err, next));
 };

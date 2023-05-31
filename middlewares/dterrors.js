@@ -3,10 +3,10 @@ const WrongEmailError = require('./WrongEmailError');
 
 // определение типа ошибки
 function determineError(err, next) {
-  console.log(err);
+  console.log('dterr:', err);
 
-  if (err.name.includes('Validation')) {
-    return next(new ValidationError(''));
+  if (err instanceof ValidationError) {
+    return next(new ValidationError());
   }
   if (err.name === 'CastError') {
     return next(new ValidationError('cast'));
