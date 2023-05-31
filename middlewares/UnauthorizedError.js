@@ -1,5 +1,5 @@
 class UnauthorizedError extends Error {
-  constructor(message) {
+  constructor(message = 'Неправильные почта или пароль') {
     super(message);
     this.name = 'UnauthorizedError';
     this.statusCode = 401;
@@ -10,9 +10,7 @@ class UnauthorizedError extends Error {
     }
     if (message.includes('header')) {
       this.message = 'Некорректный заголовок запроса';
-      return;
     }
-    this.message = 'Неправильные почта или пароль';
   }
 }
 

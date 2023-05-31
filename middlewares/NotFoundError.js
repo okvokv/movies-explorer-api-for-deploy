@@ -1,5 +1,5 @@
 class NotFoundError extends Error {
-  constructor(message) {
+  constructor(message = 'Объект не найден') {
     super(message);
     this.name = 'NotFoundError';
     this.statusCode = 404;
@@ -14,9 +14,7 @@ class NotFoundError extends Error {
     }
     if (message.includes('root')) {
       this.message = 'Ошибка маршрутизации';
-      return;
     }
-    this.message = 'Объект не найден';
   }
 }
 
