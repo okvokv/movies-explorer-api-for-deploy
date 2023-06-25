@@ -9,7 +9,7 @@ const NotFoundError = require('../middlewares/NotFoundError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 // -----------------------------------------------------------------------------
 // получить данные текущего пользователя
-const getUser = (req, res, next) => {
+function getUser(req, res, next) {
   user.findById(req.user._id)
     .then((userData) => {
       if (userData) {
@@ -19,10 +19,10 @@ const getUser = (req, res, next) => {
       next(new NotFoundError('user'));
     })
     .catch((err) => determineError(err, next));
-};
+}
 
 // изменить данные текущего пользователя
-const updateUser = (req, res, next) => {
+function updateUser(req, res, next) {
   const { name, email } = req.body;
   user.findOneAndUpdate(
     { _id: req.user._id }, // изменить профиль может только владелец
@@ -31,23 +31,8 @@ const updateUser = (req, res, next) => {
   )
     .then((userData) => res.send(userData))
     .catch((err) => determineError(err, next));
-};
+}
 // --------------------------------------------------------------------------
-
-// создать пользователя
-const createUser = (req, res, next) => {
-  const { email, password, name } = req.body;
-  // хеширование пароля
-  bcrypt.hash(password, 10)
-    .then((hpassword) => user.create({ email, password: hpassword, name }))
-    .then((userData) => res.status(201).send({
-      _id: userData._id,
-      email: userData.email,
-      name: userData.name,
-    }))
-    .catch((err) => determineError(err, next));
-};
-
 // функция создания жетона с зашифрованным _id пользователя на 7 дней
 function createToken(userData) {
   return jwt.sign(
@@ -58,8 +43,32 @@ function createToken(userData) {
   );
 }
 
+// создать пользователя
+function createUser(req, res, next) {
+  const { email, password, name } = req.body;
+  // хеширование пароля
+  bcrypt.hash(password, 10)
+    .then((hpassword) => user.create({ email, password: hpassword, name }))
+    .then((userData) => {
+      res.status(201).send({
+        _id: userData._id,
+        email: userData.email,
+        name: userData.name,
+      });
+      const token = createToken(userData);
+      // выдача жетона пользователю в coookies
+      res.cookie('token', token, {
+        maxAge: 3600000 * 24 * 7, // 7 дней
+        httpOnly: true, // нет доступа через js-код
+        sameSite: 'lax', // разрешена передача с одного и с разных сайтов
+        secure: undefined, // разрешена предача по http и по https
+      })
+        .catch((err) => determineError(err, next));
+    });
+}
+
 // авторизовать пользователя
-const login = (req, res, next) => {
+function login(req, res, next) {
   const { email, password } = req.body;
   user.findOne({ email }).select('+password')
     .then((userData) => {
@@ -86,13 +95,13 @@ const login = (req, res, next) => {
       next(new UnauthorizedError());
     })
     .catch((err) => determineError(err, next));
-};
+}
 
 // разлогинить пользователя
-const logout = (req, res) => {
+function logout(req, res) {
   res.clearCookie('token')
     .send({ message: 'Выход успешен.' });
-};
+}
 
 module.exports = {
   getUser, updateUser, createUser, login, logout,
