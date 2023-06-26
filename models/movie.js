@@ -45,7 +45,7 @@ const movieSchema = new mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      required: true,
+      // required: true,
       validate: {
         validator(link) {
           return regexforlink.test(link);
