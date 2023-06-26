@@ -45,16 +45,11 @@ function createToken(userData) {
 
 // создать пользователя
 function createUser(req, res, next) {
-  const { email, password, name } = req.body;
+  const { name, email, password } = req.body;
   // хеширование пароля
   bcrypt.hash(password, 10)
     .then((hpassword) => user.create({ email, password: hpassword, name }))
     .then((userData) => {
-      res.status(201).send({
-        _id: userData._id,
-        email: userData.email,
-        name: userData.name,
-      });
       const token = createToken(userData);
       // выдача жетона пользователю в coookies
       res.cookie('token', token, {
@@ -63,8 +58,14 @@ function createUser(req, res, next) {
         sameSite: 'lax', // разрешена передача с одного и с разных сайтов
         secure: undefined, // разрешена предача по http и по https
       })
-        .catch((err) => determineError(err, next));
-    });
+        .send({ message: 'Регистрация успешна.' });
+      res.status(201).send({
+        _id: userData._id,
+        name: userData.name,
+        email: userData.email,
+      });
+    })
+    .catch((err) => determineError(err, next));
 }
 
 // авторизовать пользователя
