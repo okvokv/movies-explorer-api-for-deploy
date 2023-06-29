@@ -27,6 +27,8 @@ app.use(cookieParser());
 // подключение логгера запросов
 app.use(requestsLogger);
 
+Access-Control-Allow-Origin: *;
+
 const allowedUrls = [
   'http://localhost:3000',
   'http://localhost:3001',
@@ -43,7 +45,7 @@ const allowedUrls = [
 // app.options('*', cors());
 // обработчик cors
 app.use(cors({
-  origin: allowedUrls,
+  origin: false,
   credentials: true,
 }));
 
