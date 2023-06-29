@@ -36,10 +36,9 @@ const allowedUrls = [
   'https://api.okvokv.nomoredomains.rocks',
 ];
 
-app.options('*', cors());
+// app.options('*', cors());
 // обработчик cors
 app.use(cors({
-  origin: allowedUrls,
   credentials: true,
 }));
 
