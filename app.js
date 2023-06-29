@@ -37,10 +37,11 @@ const allowedUrls = [
 ];
 
 // обработчик cors
-app.use(cors({
+/* app.use(cors({
   origin: allowedUrls,
   credentials: true,
-}));
+})); */
+app.use(cors());
 
 // ограничение числа запросов к серверу
 app.use(limiter);
