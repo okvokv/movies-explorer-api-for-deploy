@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { regexforlink } = require('../utils/regex');
+const { regexforlink, regexforpic } = require('../utils/regex');
 
 const movieSchema = new mongoose.Schema(
   {
@@ -28,7 +28,7 @@ const movieSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator(link) {
-          return regexforlink.test(link);
+          return regexforpic.test(link);
         },
         message: 'Ошибка валидации ссылки',
       },
@@ -36,16 +36,6 @@ const movieSchema = new mongoose.Schema(
     trailerLink: {
       type: String,
       required: true,
-      validate: {
-        validator(link) {
-          return regexforlink.test(link);
-        },
-        message: 'Ошибка валидации ссылки',
-      },
-    },
-    thumbnail: {
-      type: String,
-      // required: true,
       validate: {
         validator(link) {
           return regexforlink.test(link);

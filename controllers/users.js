@@ -52,18 +52,13 @@ function createUser(req, res, next) {
     .then((userData) => {
       const token = createToken(userData);
       // выдача жетона пользователю в coookies
-      res.cookie('token', token, {
+      res.status(201).cookie('token', token, {
         maxAge: 3600000 * 24 * 7, // 7 дней
         httpOnly: true, // нет доступа через js-код
         sameSite: 'lax', // разрешена передача с одного и с разных сайтов
         secure: undefined, // разрешена предача по http и по https
       })
         .send({ message: 'Регистрация успешна.' });
-      res.status(201).send({
-        _id: userData._id,
-        name: userData.name,
-        email: userData.email,
-      });
     })
     .catch((err) => determineError(err, next));
 }
