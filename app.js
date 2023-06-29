@@ -30,6 +30,10 @@ app.use(requestsLogger);
 const allowedUrls = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://localhost:3000/signin',
+  'http://localhost:3001/signin',
+  'http://localhost:3000/signup',
+  'http://localhost:3001/signup',
   'http://okvokv.nomoredomains.rocks',
   'https://okvokv.nomoredomains.rocks',
   'http://api.okvokv.nomoredomains.rocks',
