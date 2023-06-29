@@ -32,6 +32,8 @@ const allowedUrls = [
   'http://localhost:3001',
   'http://okvokv.nomoredomains.rocks',
   'https://okvokv.nomoredomains.rocks',
+  'http://api.okvokv.nomoredomains.rocks',
+  'https://api.okvokv.nomoredomains.rocks',
 ];
 
 // обработчик cors

@@ -55,7 +55,7 @@ function createUser(req, res, next) {
       res.status(201).cookie('token', token, {
         maxAge: 3600000 * 24 * 7, // 7 дней
         httpOnly: true, // нет доступа через js-код
-        sameSite: 'lax', // разрешена передача с одного и с разных сайтов
+        sameSite: 'none', // разрешена передача с одного и с разных сайтов
         secure: undefined, // разрешена предача по http и по https
       })
         .send({ message: 'Регистрация успешна.' });
