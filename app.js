@@ -27,18 +27,19 @@ app.use(cookieParser());
 // подключение логгера запросов
 app.use(requestsLogger);
 
-/* const allowedUrls = [
+const allowedUrls = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://okvokv.nomoredomains.rocks',
   'https://okvokv.nomoredomains.rocks',
   'http://api.okvokv.nomoredomains.rocks',
   'https://api.okvokv.nomoredomains.rocks',
-]; */
+];
 
+app.options('*', cors());
 // обработчик cors
 app.use(cors({
-  origin: '*',
+  origin: allowedUrls,
   credentials: true,
 }));
 
