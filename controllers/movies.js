@@ -5,9 +5,10 @@ const NotFoundError = require('../middlewares/NotFoundError');
 
 // получить все карточки фильмов, сохранённых текущим пользователем
 const getMovies = (req, res, next) => {
-  const userId = req.user._id;
-  movie.find({ userId })
-    .then((userMovies) => res.send(userMovies))
+  movie.find({ ownerId: req.user._id })
+    .then((userMovies) => {
+      res.send(userMovies);
+    })
     .catch((err) => determineError(err, next));
 };
 
