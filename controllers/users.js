@@ -55,8 +55,8 @@ function createUser(req, res, next) {
       res.status(201).cookie('token', token, {
         maxAge: 3600000 * 24 * 7, // 7 дней
         httpOnly: true, // нет доступа через js-код
-        // sameSite: 'lax', // разрешена передача с одного и с разных сайтов
-        secure: undefined, // разрешена предача по http и по https
+        sameSite: 'lax', // разрешена передача с одного и с разных сайтов
+        secure: false, // разрешена предача по http и по https
       })
         .send({ message: 'Регистрация успешна.' });
     })
@@ -78,7 +78,7 @@ function login(req, res, next) {
                 maxAge: 3600000 * 24 * 7, // 7 дней
                 httpOnly: true, // нет доступа через js-код
                 sameSite: 'lax', // разрешена передача с одного и с разных сайтов
-                secure: undefined, // разрешена предача по http и по https
+                secure: false, // разрешена предача по http и по https
               })
                 .send({ message: 'Авторизация успешна.' });
               return;
