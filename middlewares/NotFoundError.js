@@ -8,7 +8,7 @@ class NotFoundError extends Error {
       this.message = 'Запрашиваемый пользователь не найден';
       return;
     }
-    if (message.includes('cards')) {
+    if (message.includes('card')) {
       this.message = 'Запрашиваемая карточка не найдена';
       return;
     }
