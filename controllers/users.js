@@ -80,7 +80,7 @@ function login(req, res, next) {
                 sameSite: 'lax', // разрешена передача с одного и с разных сайтов
                 secure: false, // разрешена предача по http и по https
               })
-                .send({ message: 'Авторизация успешна.' }).setHeader('Access-Control-Allow-Credentials', 'true');
+                .send({ message: 'Авторизация успешна.' })
               return;
             }
             next(new UnauthorizedError());
