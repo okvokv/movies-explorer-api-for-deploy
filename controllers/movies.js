@@ -15,7 +15,7 @@ const getMovies = (req, res, next) => {
 // создать карточку фильма
 const postMovie = (req, res, next) => {
   const ownerId = req.user._id;
-  const movieData = req.body;
+  const { movieData } = req.body;
   movie.create({ ownerId, ...movieData })
     .then((data) => res.status(201).send(data))
     .catch((err) => determineError(err, next));
