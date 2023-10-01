@@ -9,13 +9,13 @@
 
 
 ссылка на сервер в облаке:	
-https://console.cloud.yandex.ru/folders/b1gkf7fffpiggum0em66/compute/instances
+
 
 ---------------------------------------------------------------------------------
 
 ####   Ссылки на проект для ревью
 
-IP <158.160.65.158>
+IP <*.*.*.*>
 
 Frontend  https://okvokv.nomoredomains.rocks
 
