@@ -46,9 +46,9 @@ app.use(cors({
 app.use(limiter);
 
 // реализация возможности краш-теста при запросе на роут, потом удалить
-app.get('/crash-test', () => {
-  setTimeout(() => { throw new Error('Сервер сейчас упадёт'); }, 0);
-});
+// app.get('/crash-test', () => {
+// setTimeout(() => { throw new Error('Сервер сейчас упадёт'); }, 0);
+// });
 
 // подключение защиты заголовков
 app.use(helmet());
