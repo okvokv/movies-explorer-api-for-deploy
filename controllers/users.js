@@ -5,6 +5,7 @@ const user = require('../models/user');
 const determineError = require('../middlewares/dterrors');
 const UnauthorizedError = require('../middlewares/UnauthorizedError');
 const NotFoundError = require('../middlewares/NotFoundError');
+const ForbiddenError = require('../middlewares/ForbiddenError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 // -----------------------------------------------------------------------------
@@ -54,7 +55,7 @@ function createUser(req, res, next) {
       // выдача жетона пользователю в coookies
       res.status(201).cookie('token', token, {
         maxAge: 3600000 * 24 * 7, // 7 дней
-        httpOnly: true, // нет доступа через js-код
+        httpOnly: true, // закрыт доступ через js-код на фронтенде
         sameSite: 'lax', // разрешена передача с одного и с разных сайтов
         secure: false, // разрешена предача по http и по https
       })
@@ -80,7 +81,7 @@ function login(req, res, next) {
                 sameSite: 'lax', // разрешена передача с одного и с разных сайтов
                 secure: false, // разрешена предача по http и по https
               })
-                .send({ message: 'Авторизация успешна.' })
+                .send({ message: 'Авторизация успешна.' });
               return;
             }
             next(new UnauthorizedError());
@@ -99,6 +100,26 @@ function logout(req, res) {
     .send({ message: 'Выход успешен.' });
 }
 
+// удалить пользователя
+function removeUser(req, res, next) {
+  // проверка существования пользователя с данным _id в бд
+  user.findById(req.user._id)
+    .then((userData) => {
+      if (userData) {
+        // пользователя может удалить только владелец
+        user.findByIdAndRemove(req.user._id, { _id: req.user._id })
+          .then(() => {
+            res.clearCookie('token')
+              .send({ message: 'Пользователь удалён' });
+          })
+          .catch((err) => determineError(err, next));
+        return;
+      }
+      next(new ForbiddenError());
+    });
+  next(new NotFoundError('user'));
+}
+
 module.exports = {
-  getUser, updateUser, createUser, login, logout,
+  getUser, updateUser, createUser, login, logout, removeUser,
 };

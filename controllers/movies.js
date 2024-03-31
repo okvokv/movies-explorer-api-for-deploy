@@ -6,18 +6,18 @@ const NotFoundError = require('../middlewares/NotFoundError');
 // получить все карточки фильмов, сохранённых текущим пользователем
 const getMovies = (req, res, next) => {
   movie.find({ ownerId: req.user._id })
-    .then((userMovies) => {
-      res.send(userMovies);
-    })
+    .then((userMovies) => res.send(userMovies))
     .catch((err) => determineError(err, next));
 };
 
-// создать карточку фильма
+// добавить карточку фильма
 const postMovie = (req, res, next) => {
   const ownerId = req.user._id;
   const { movieData } = req.body;
   movie.create({ ownerId, ...movieData })
-    .then((data) => res.status(201).send(data))
+    .then((data) => {
+      res.status(201).send(data);
+    })
     .catch((err) => determineError(err, next));
 };
 
