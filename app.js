@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const { PORT, MONGODB_URL } = require('./config');
 const finalErrorHandler = require('./middlewares/finalErrorHandler');
-const routes = require('./routes');
+const routers = require('./routers');
 const { requestsLogger, errorsLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/rateLimiter');
 
@@ -21,15 +21,18 @@ mongoose.connect(MONGODB_URL)
 
 // сборка объекта из JSON-формата
 app.use(express.json());
+
 // сборка приходящих cookies
 app.use(cookieParser());
 
 // подключение логгера запросов
 app.use(requestsLogger);
 
+// ------------------------------------------------------------------
 const allowedUrls = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://172.29.80.10:3001',
   'http://okvokv.nomoredomains.rocks',
   'https://okvokv.nomoredomains.rocks',
   'http://okvokv-front.kesug.com',
@@ -46,15 +49,15 @@ app.use(cors({
 app.use(limiter);
 
 // реализация возможности краш-теста при запросе на роут, потом удалить
-// app.get('/crash-test', () => {
-// setTimeout(() => { throw new Error('Сервер сейчас упадёт'); }, 0);
-// });
+app.get('/crash-test', () => {
+  setTimeout(() => { throw new Error('Сервер сейчас упадёт'); }, 0);
+});
 
 // подключение защиты заголовков
 app.use(helmet());
 
-// подключение роутеров
-app.use(routes);
+// подключение обр. запросов
+app.use(routers);
 
 // подключение логгера ошибок (после обр. запросов, до обр. ошибок)
 app.use(errorsLogger);
@@ -67,5 +70,5 @@ app.use(finalErrorHandler);
 
 // включение прослушивания  порта
 app.listen(PORT, () => {
-  console.log(`App server listening at: http://localhost:${PORT}`);
+  console.log(`Api server listening at: http://localhost:${PORT}`);
 });
